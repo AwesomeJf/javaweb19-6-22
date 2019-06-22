@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+	<meta name="auto" content='spider'>
+	<meta charset="UTF-8">
+	<title>去哪玩</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/information.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+	<!--<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">-->
+	<script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/header.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<!--引入头部框-->
+<div th:replace="header::#topbar"></div>
+
+
+	<!--<header id='header'>-->
+		<!--<div class='center'>-->
+			<!--<div class="lv_logo">-->
+				<!--<img th:src="@{/image/here.png}" />-->
+				<!--<span >去哪玩旅游网</span>-->
+			<!--</div>-->
+			<!--<nav style='overflow:hidden;'>-->
+				<!--&lt;!&ndash;为了大纲清晰，所以要加个标题&ndash;&gt;-->
+				<!--<h2 class="none">网站导航</h2>-->
+			<!--<ul class="link">-->
+					<!--<li ><a th:href="@{/trip}"style="font-size:16px">首页</a></li>-->
+					<!--<li class="active"><a th:href="@{/tripselect}"style="font-size:16px">旅游咨询</a></li>-->
+					<!--<li><a href="buy.html"style="font-size:16px">机票订购</a></li>-->
+					<!--<li><a href="scenery.html"style="font-size:16px">风景欣赏</a></li>-->
+					<!--<li><a href="about.html"style="font-size:16px">公司简介</a></li>-->
+				<!--</ul>-->
+			<!--</nav>-->
+		<!--</div>-->
+	<!--</header>-->
+	<div id="headline">
+		<div class="center">
+			<hgroup>				
+				<h2>旅游咨询</h2>
+				<h3>介绍各种旅游信息、资讯要闻、景点攻略等</h3>
+			</hgroup>
+		</div>
+	</div>
+
+
+
+<div id="containter" style="overflow:auto">
+		<div>
+		<aside class='sidebar'>
+			<!--<div class="sidebox hot">-->
+				<!--<h2>热门景点</h2>-->
+				<!--<div>-->
+					<!--<figure>-->
+						<!--<img th:src="@{/image/sidebar1.jpg}" />-->
+						<!--<figcaption>巴厘岛1日游</figcaption>-->
+					<!--</figure>-->
+					<!--<figure>-->
+						<!--<img th:src="@{/image/sidebar2.jpg}"  />-->
+						<!--<figcaption>巴厘岛1日游</figcaption>-->
+					<!--</figure>-->
+					<!--<figure>-->
+						<!--<img th:src="@{/image/sidebar3.jpg}"  />-->
+						<!--<figcaption>巴厘岛1日游</figcaption>-->
+					<!--</figure>-->
+					<!--<figure>-->
+						<!--<img th:src="@{/image/sidebar4.jpg}"  />-->
+						<!--<figcaption>巴厘岛1日游</figcaption>-->
+					<!--</figure>-->
+					<!--<figure>-->
+						<!--<img th:src="@{/image/sidebar5.jpg}"  />-->
+						<!--<figcaption>巴厘岛1日游</figcaption>-->
+					<!--</figure>-->
+					<!--<figure>-->
+						<!--<img th:src="@{/image/sidebar6.jpg}"  />-->
+						<!--<figcaption>巴厘岛1日游</figcaption>-->
+					<!--</figure>-->
+				<!--</div>-->
+			<!--</div>-->
+			<div class="sidebox recommend">
+				<h2>热门主题</h2>
+				<div class="tag">
+					<ul>
+
+						<li th:each="theme:${themeInfo}">
+							<a th:href="@{/select1/}+${theme.name}" th:text="${theme.name}"></a>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+
+
+		</aside>
+		<div class="list">
+			<div class="infor" style="font-size: 20px">
+			<ul class="left">
+				<li id="hotli" th:style="${chooseInfo==null}?'background-color:#fff;border-top: 2px solid #458b00':'background-color:#eee;border-top: 0px solid'"><a th:href="@{/tripselect}">热门推荐</a></li>
+				<li id="resultli" th:style="${chooseInfo!=null}?'background-color:#fff;border-top: 2px solid #458b00':'background-color:#eee;border-top: 0px solid'"><a href='#'>查询结果</a></li>
+			</ul>
+			<ul class="right">
+				<li><a href='#' class="checked">推荐</a></li>
+				<li><a href='#'>价格</a></li>
+			</ul>
+			</div>
+
+			<div>
+
+
+
+				<figure class="content" th:each="trip:${tripInfo}"   th:style="@{margin-bottom: 100px;}">
+				<div class="recommend" >
+					<div class="detail">
+						<a class="detail_img" th:href="@{/detail/}+${trip.id}">
+							<img  th:src="'data:image/jpeg;base64,'+${trip.data}"
+								 width="380px" height="220px" style="margin: 5px"/>
+								<!--<span class="detail_tag detail_tag_blue">自驾游</span>-->
+						</a>
+						<div class="price" style="float: right;margin-top: 60px;margin-right: 40px">
+							<p class="priceTitle">去哪玩价:</p>
+							<p class="priceBox">
+									<span>
+										¥ <b>[[${trip.price}]]</b>
+									</span>
+								<label>起/人</label>
+							</p>
+							<p class="good_comment"><span>[[${trip.goodRate}]]</span>好评率</p>
+						</div>
+						<div class="detail">
+							<div class="detail_list" >
+								<p class="detail_title" style="margin-top:20px">
+									<span class="title_left">[[${trip.startPlace}]]出发 |</span>
+									<a href="tripDetail?id=${trip.id}&type=init">
+										[[${trip.sTitle}]]
+									</a>
+								</p>
+								<dl class="detail_text theme_text">
+									<dt>主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题</dt>
+									<dd>
+										<p style="margin-left: 20px">
+										<div style="margin-left: 20px">
+										<div th:each="theme:${trip.theme}" th:style="@{float:left;}">[[${theme}]]&nbsp;&nbsp;&nbsp; </div>
+									    </div>
+										</p>
+
+									</dd>
+								</dl>
+								<dl class="detail_text theme_text">
+									<div >
+									<dt>景&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点</dt>
+									<dd>
+										<p style="margin-left: 20px">
+										<div style="margin-left: 20px">
+											<div th:each="place:${trip.place}" th:style="@{float:left;}">[[${place}]]&nbsp; &nbsp;&nbsp;</div>
+									    </div>
+										</p>
+									</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="discribe">
+						<ul>
+							<li style="width: 210px">
+								<p><span class="icon icon_traffic"></span>交通</p>
+								<p>
+									<span>[[${trip.traffic}]]</span>
+									<span><a href="#"></a></span>
+								</p>
+							</li>
+							<li class="js_tips" style="width: 210px">
+								<p><span class="icon icon_stay"></span>住宿</p>
+								<p>
+									<span>[[${trip.hotel}]]</span>
+									<span><a href="#"></a></span>
+								</p>
+							</li>
+							<li class="js_tips" style="width: 210px">
+								<p><span class="icon icon_time"></span>行程天数</p>
+								<p>
+									<span>[[${trip.time}]]天</span>
+								</p>
+							</li>
+							<li class="js_tips" style="width: 210px">
+								<p><span class="icon icon_date"></span>出发日期</p>
+								<p>
+										<span th:each="date:${trip.date}">
+											   [[${#dates.format(date, 'yyyy-MM-dd')}]]
+										</span>
+								</p>
+							</li>
+						</ul>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				</figure>
+
+
+
+		</div>
+			<div class="more"><a href='#'>回到头部.</a></div>
+		</div>
+	</div>
+
+
+	</div>
+			<footer id='foot'>
+			<div class="top">
+				<div class="block left ">
+					<h2>合作伙伴</h2>
+					<hr>
+					<ul>
+						<li>途牛旅游网</li>
+						<li>驴妈妈旅游网</li>
+						<li>携程旅游</li>
+						<li>中国青年旅行社</li>
+					</ul>
+				</div>
+				<div class="block center ">
+					<h2>合作伙伴</h2>
+					<hr>
+					<ul>
+						<li>途牛旅游网</li>
+						<li>驴妈妈旅游网</li>
+						<li>携程旅游</li>
+						<li>中国青年旅行社</li>
+					</ul>
+				</div>
+				<div class="block right ">
+					<h2>合作伙伴</h2>
+					<hr>
+					<ul>
+						<li>途牛旅游网</li>
+						<li>驴妈妈旅游网</li>
+						<li>携程旅游</li>
+						<li>中国青年旅行社</li>
+					</ul>
+				</div>
+			</div>
+			<div class="bottom">
+				去哪玩 | www.qunawan.com | 旅行经营许可证
+			</div>
+		</footer>
+</body>
+<script type="text/javascript">
+    $("#person").hover(function(){
+        $("#person .personlist").show();
+
+    }, function(){
+        $("#person .personlist").hide();
+    });
+</script>
+</html>

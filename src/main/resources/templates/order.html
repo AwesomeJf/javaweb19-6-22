@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/information.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/header.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/order.css}">
+</head>
+<body>
+<!--引入头部框-->
+<div th:replace="header::#topbar"></div>
+
+
+<!--<header id='header'>-->
+    <!--<div class='center'>-->
+        <!--<div class="lv_logo">-->
+            <!--<img th:src="@{/image/here.png}" />-->
+            <!--<span >去哪玩旅游网</span>-->
+        <!--</div>-->
+        <!--<nav style='overflow:hidden;'>-->
+            <!--&lt;!&ndash;为了大纲清晰，所以要加个标题&ndash;&gt;-->
+            <!--<h2 class="none">网站导航</h2>-->
+            <!--<ul class="link">-->
+                <!--<li ><a th:href="@{/trip}"style="font-size:16px">首页</a></li>-->
+                <!--<li class="active"><a th:href="@{/tripselect}"style="font-size:16px">旅游咨询</a></li>-->
+                <!--<li><a href="buy.html"style="font-size:16px">机票订购</a></li>-->
+                <!--<li><a href="scenery.html"style="font-size:16px">风景欣赏</a></li>-->
+                <!--<li><a href="about.html"style="font-size:16px">公司简介</a></li>-->
+            <!--</ul>-->
+        <!--</nav>-->
+    <!--</div>-->
+<!--</header>-->
+
+
+<!-- 主体【开始】 -->
+<div class="main">
+    <div class="wrap">
+        <!-- 步骤【开始】 -->
+        <ol class="step">
+            <li class="ui-step1 ui-step-start cur">
+                <div class="step-arrow">
+                    <i class="arrow_r1"></i> <i class="arrow_r2"></i>
+                </div> <span class="step-text">1.填写订单信息</span>
+            </li>
+            <li class="ui-step2">
+                <div class="step-arrow">
+                    <i class="arrow_r1"></i> <i class="arrow_r2"></i>
+                </div> <span class="ui-step-text">2.选择付款方式付款</span>
+            </li>
+            <li class="ui-step3 ui-step-end">
+                <div class="step-arrow"></div> <span class="ui-step-text">3.预订成功</span>
+            </li>
+        </ol>
+        <!-- 步骤【结束】 -->
+
+        <div class="panel1">
+            <form id="putOrderForm" th:action="@{/ordered}" method="get">
+              <!--隐藏域-->
+                <input id="trip_id" name="trip_id" type="hidden" th:value="${tripIdInfo}"/>
+                <input id="total_num" name="total_num" type="hidden" th:value="${numInfo}"/>
+                <input id="people" name="people" type="hidden" th:value="${peopleInfo}"/>
+                <input id="time" name="time" type="hidden" th:value="${dateInfo}"/>
+             <div class="order_box border_3 position_r">
+                <h1 class="order_name">
+                    <span>[[${titleInfo}]]</span>
+                </h1>
+                <!-- 订单信息 -->
+                <dl class="order_line">
+                    <dt>国内游</dt>
+                    <dd>
+                        <table class="pro_table">
+                            <tbody>
+                            <tr>
+                                <th width="70%" style="text-align: left">产品信息</th>
+                                <th width="20%" style="text-align: left">游玩时间</th>
+                                <th width="10%">人数</th>
+                            </tr>
+                            <tr>
+                                <td>[[${stitleInfo}]]</td>
+                                <!--<td><fmt:formatDate value="${put_order_time }"-->
+                                                    <!--pattern="yyyy-MM-dd" /></td>-->
+                                <td>[[${dateInfo}]]</td>
+                                <td style="text-align: center">[[${peopleInfo}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+                <!-- 附加商品 -->
+                <div class="clear"></div>
+            </div>
+                <!-- 订单信息1——详情【结束】 -->
+
+                <!-- 订单信息2——联系人信息【开始】 -->
+                <div class="order_box">
+                    <!--联系人信息-->
+                    <h3 class="order_title border_b2">联系人信息</h3>
+                    <div id="user_info" class="user_info">
+
+                        <!-- 购买人信息确认  自定义动态标签 【start】-->
+
+                        <!--<own:orderOwnTag real_name="${user.real_name }" phone="${user.phone }" email="${user.email }"/>-->
+                        <input type="hidden" id="u_name" th:value="${userInfo.realName}" />
+                        <input type="hidden" id="u_phone" th:value="${userInfo.phone}" />
+                        <input type="hidden" id="u_email" th:value="${userInfo.email}" />
+
+                        <!--购买人信息确认  自定义动态标签 【end】-->
+
+                         <dl class="user_dl">
+                        <dt>
+                            <span class="red">*</span>姓名：
+                        </dt>
+                        <dd class="error_show">
+                            <label th:text="${userInfo.realName}==null?'未设置':${userInfo.realName}">
+
+                            </label>
+                        </dd>
+                    </dl>
+                        <dl class="user_dl">
+                            <dt>
+                                <span class="red">*</span>手机号码：
+                            </dt>
+                            <dd class="error_show">
+                                <label th:text="${userInfo.phone}==null?'未设置':${userInfo.phone}">
+
+                                </label>
+                            </dd>
+                        </dl>
+                        <dl class="user_dl">
+                            <dt>
+                                <span class="red">*</span>邮箱地址：
+                            </dt>
+                            <dd class="error_show">
+                                <label th:text="${userInfo.email}==null?'未设置':${userInfo.email}">
+
+                                </label>
+                            </dd>
+                        </dl>
+                        <h5 class="person_title">购买人</h5>
+                    </div>
+                    <div class="dot_line"></div>
+                    <!-- 紧急联系人列表选中 -->
+                    <div class="contactlist" id="em_contactlist">
+                        <ul>
+                            <li id="em_contactlist_li">
+
+								<span th:each="contact,iterStat:${contactInfo}">
+									<input type="radio" name="emer_id" th:id="'contact'+${iterStat.index}" th:value="${contact.id}"
+                                           th:onchange="selectEmContact(this,[[${contact.name}]],[[${contact.phone}]])"/>&nbsp;
+									<label th:for="'contact'+${iterStat.index}">[[${contact.name}]]</label>
+								</span>
+
+                                <span id="moreEM_Contacts" class="more"><a href="javascript:void(0);" onclick="getAllContact('em')">更多</a></span>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                    <!--紧急联系人信息-->
+                    <div id="userinfoDiv"></div>
+                    <div>
+                        <input type="hidden" name="em_id" id="em_id" value="-1">
+                        <div class="user_info no_bd">
+                            <dl class="user_dl">
+                                <dt>
+                                    <span class="red">*</span>姓名：
+                                </dt>
+                                <dd>
+                                    <input class="input realname" onchange="checkRadio()" id="em_name" name="em_name" type="text" placeholder="姓名" maxlength="16" />
+                                    <span class="error_text"><i class="tip-icon tip-icon-error"></i><label>请输入姓名</label></span>
+                                </dd>
+                            </dl>
+                            <dl class="user_dl">
+                                <dt>
+                                    <span class="red">*</span>手机号码：
+                                </dt>
+                                <dd>
+                                    <input class="input phone" onchange="checkRadio()" id="em_phone" name="em_phone" maxlength="11" type="text" placeholder="手机号码" >
+                                    <span class="prompt_text">此手机号为接收短信所用，作为订购与取票凭证，请准确填写。</span>
+                                    <span class="error_text"><i class="tip-icon tip-icon-error"></i>手机号码不正确</span>
+                                </dd>
+                            </dl>
+                            <h5 class="person_title">紧急联系人</h5>
+                        </div>
+                    </div>
+                    <div class="dot_line"></div>
+                    <!-- 游玩人列表勾选 -->
+
+
+                    <div class="contactlist" id="pl_contactlist">
+                        <ul th:id="'count'+${peopleInfo}">
+                            <li id="pl_contactlist_li">
+
+								<span th:each="contact,iterStat:${contactInfo}">
+									<input type="checkbox" name="player_id"
+                                           th:id="'contactp'+${iterStat.index}" th:value="${contact.id}"
+                                           th:onchange="selectPlContact(this,[[${iterStat.size}]],[[${contact.name}]],[[${contact.phone}]],[[${contact.cardno}]])" />&nbsp;
+									<label th:for="'contactp'+${iterStat.index}">[[${contact.name}]]</label>
+								</span>
+
+                                <span id="morePL_Contacts" class="more">
+									<a href="javascript:void(0);" onclick="getAllContact('pl')">更多</a>
+								</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--游玩人信息-->
+
+                    <div>
+                        <div th:each="people,iterStat:${peopleInfo}">
+
+                            <input type="hidden" name="w_id" id="w_id${i }" value="-1">
+                            <div class="user_info no_bd">
+                                <dl class="user_dl">
+                                    <dt>
+                                        <span class="red">*</span>姓名：
+                                    </dt>
+                                    <dd>
+                                        <input th:class="'input realname player'+${iterStat.index}" th:id="'w_name'+${iterStat.index}" name="w_name" type="text" th:onchange="checkEdit([[${people}]])" placeholder="姓名" maxlength="16">
+                                        <span class="error_text"><i class="tip-icon tip-icon-error"></i>请输入姓名</span>
+                                    </dd>
+                                </dl>
+                                <dl class="user_dl">
+                                    <dt>
+                                        <span class="red">*</span>手机号码：
+                                    </dt>
+                                    <dd>
+                                        <input th:class="'input phone player'+${iterStat.index}" th:id="'w_phone'+${iterStat.index}" name="w_phone" maxlength="11" th:onchange="checkEdit([[${people}]])" type="text" placeholder="手机号码">
+                                        <span class="prompt_text">此手机号为接收短信所用，作为订购与取票凭证，请准确填写。</span>
+                                        <span class="error_text"><i class="tip-icon tip-icon-error"></i>手机号码不正确</span>
+                                    </dd>
+                                </dl>
+                                <dl class="user_dl">
+                                    <dt>
+                                        <span class="red">*</span>身份证号码：
+                                    </dt>
+                                    <dd>
+                                        <input th:class="'input identity player'+${iterStat.index}" th:id="'w_cardno'+${iterStat.index}" name="w_cardno" type="text" th:onchange="checkEdit([[${people}]])" placeholder="身份证号码" maxlength="18">
+                                        <span class="error_text"><i class="tip-icon tip-icon-error"></i>请输入合法的身份证号码</span>
+                                    </dd>
+                                </dl>
+                                <h5 class="person_title">游玩人</h5>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!--&lt;!&ndash; 上车地点 &ndash;&gt;-->
+                    <!--<h3 class="order_tit border_b2">上车地点</h3>-->
+                    <!--<div class="user_info">-->
+                        <!--<dl class="user_dl name_check">-->
+                            <!--<dt>上车地点：</dt>-->
+                            <!--<dd>-->
+                                <!--<input type="hidden" name="place" value="${put_order_trip.schedule.traffic.go_point }" />-->
+                                <!--<label class="check">${put_order_trip.schedule.traffic.go_point }</label><span-->
+                                    <!--class="ts_text">发车时间：${put_order_trip.schedule.traffic.go_time }</span>-->
+                                <!--<span class="ts_text">备注：始发站</span><br>-->
+                            <!--</dd>-->
+                        <!--</dl>-->
+                    <!--</div>-->
+                </div>
+                 <!--订单信息2——联系人信息【结束】-->
+
+                <!-- 订单信息3——确认订单【开始】 -->
+                <div class="pay">
+                    <div class="pay_box" style="position: absolute;">
+                        <a href="javascript:void(0);" class="pay_right" onclick="valid();"> 下订单 </a>
+                        <div class="pay_left">
+                            <div class="left_box">
+                                <p class="pay_p1">
+                                    应付总价:<span><small>¥</small></span><span id="total"
+                                                                            style="margin-left: 0">[[${numInfo}]]</span>
+                                </p>
+                                <p class="pay_p2">
+                                    （包含：商品价<span id="total1">¥ [[${numInfo}]]</span>）
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- 订单信息3——确认订单【结束】 -->
+    </div>
+</div>
+<script type="text/javascript">
+    $(".user_dl .input").focus(function() {
+        $(this).css("border", "1px solid #74b9ef");
+        $(this).addClass("outset");
+    })
+
+    $(".user_dl .input").blur(function() {
+        $(this).css("border", "1px solid #aabbcc");
+        $(this).removeClass("outset");
+    })
+</script>
+<script type="text/javascript"
+        th:src="@{/js//order/order.js}"></script>
+<!-- 主体【结束】 -->
+
+
+<script type="text/javascript">
+    $("#person").hover(function(){
+        $("#person .personlist").show();
+
+    }, function(){
+        $("#person .personlist").hide();
+    });
+</script>
+</body>
+</html>

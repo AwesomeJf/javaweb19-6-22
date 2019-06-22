@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Login</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/auth.css}">
+	<script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+
+</head>
+
+<body>
+	<div class="lowin" >
+		<div class="lowin-brand">
+			<img th:src="@{/image/here.png}" alt="logo">
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form   method="post">
+						<p>Sign in to continue</p>
+						<span id = "errmsg" th:text="${errMsg!=null}?${errMsg}"></span>
+						<div class="lowin-group">
+							<label>Phone <a href="#" class="login-back-link">Sign in?</a></label>
+							<input type="phone" autocomplete="phone" name="phone" th:placeholder="phone" class="lowin-input"  id="phone">
+						</div>
+						<div class="lowin-group password-group">
+							<label>Password <a href="#" class="forgot-link">Forgot Password?</a></label>
+							<input type="password" name="password" autocomplete="current-password" th:placeholder="password"class="lowin-input"  id="password">
+						</div>
+						<div  class="lowin-group">
+								<span class="identifying">
+									<img th:src="@{/code}" width="120px" height="34px" id="img"/>
+
+								</span>
+								<input type="text" name="code" id="ident" class="text identify" placeholder="验证码" />
+						</div>
+						<br><br><br>
+						<input class="lowin-btn login-btn" type="submit" value="Sign In" onclick="valid1()" id="login"/>
+
+						<div class="text-foot">
+							Don't have an account? <a href="" class="register-link">Register</a>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="lowin-box lowin-register">
+				<div class="lowin-box-inner">
+					<form method="post" th:action="@{/register}">
+						<p>Let's create your account</p>
+						<div class="lowin-group">
+							<label>Phone</label>
+							<input type="text" name="phone" autocomplete="phone" class="lowin-input">
+						</div>
+						<div class="lowin-group">
+							<label>Email</label>
+							<input type="email" autocomplete="email" name="email" class="lowin-input">
+						</div>
+						<div class="lowin-group">
+							<label>Password</label>
+							<input type="password" name="password" autocomplete="current-password" class="lowin-input" >
+						</div>
+						<button class="lowin-btn" type="submit" >
+							Sign Up
+						</button>
+
+						<div class="text-foot">
+							Already have an account? <a href="" class="login-link">Login</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	
+		<footer class="lowin-footer">
+			Design By @itskodinger. More Templates <a href="" target="_blank" title="小肥侠">小肥侠</a> - Collect from <a href="" title="小肥侠" target="_blank">小肥侠</a>
+		</footer>
+	</div>
+
+	<script th:src="@{/js/auth.js}"></script>
+	<script>
+          Auth.init({
+              login_url: 'login',
+              forgot_url: 'forgot'
+
+          });
+	</script>
+	<script type="text/javascript">
+        $("#img").click(function () {
+			//$(this).attr("src",);
+			$that = $(this);
+			$.ajax({
+				type:"GET",
+				url:'/code?id='+new Date().getMilliseconds(),
+                contentType:"application/json; charset=utf-8",
+                success:function(data){
+				    console.log(data);
+				    $that.attr("src",'/code?id='+new Date().getMilliseconds());
+				}
+			})
+        })
+        // function valid1() {
+        //     var flag1 = true;
+        //     var flag2 = true;
+        //
+        //     var phone =  $("#phone").val();
+        //     var pass=$("#password").val();
+        //     if (validIsNull(phone))
+			// {
+        //         var flag1 = false;
+			// }
+        //     if (validIsNull(pass))
+        //     {
+        //         var flag2 = false;
+        //     }
+			// if(flag1&flag2){
+        //         $("#login").submit();
+			// }
+        //2
+        // }
+        // function validIsNull(txt) {
+        //     if (txt.trim() == "")
+        //         return true;
+        //     return flase;
+        // };
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>订单详情</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!--&lt;!&ndash; Custom styles for this template &ndash;&gt;-->
+    <link th:href="@{/css/dashboard.css}"  rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/personalCss.css}" />
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/personal_information.js}"></script>
+    <script type="text/javascript" th:src="@{/js/personal_order.js}"></script>
+    <script type="text/javascript" th:src="@{/js/header.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/order_detail.css}">
+    <script type="text/javascript" th:src="@{/js/header.js}"></script>
+</head>
+
+<body>
+<!--顶部-->
+<div th:replace="header::#topbar"></div>
+
+<div style="margin:30px auto">
+    <div style="width: 200px;height:100px;float: left "></div>
+    <!--左侧-->
+    <div th:replace="left::#leftbar(activeUri='myOrder.html')"></div>
+
+    <!--右侧-->
+    <div class="content_right_pa" style="float: left">
+        <!-- 右侧    我的约单 开始-->
+        <div class="base">
+            <!-- 导航栏【开始】 -->
+            <!--<div class="navigation">
+				<span class="font_g9"> <a href="index">我的去哪玩</a> > <a href="myorder?type=init">我的订单</a>
+					> <a class="cur" href="javascript:void(0);">订单详情</a> <span>
+            </div>-->
+            <!-- 导航栏【结束】 -->
+            <div class="content">
+                <!-- 订单详情>> -->
+                <div class="box">
+                    <div class="box_title">
+                        <h3>订单详情</h3>
+                    </div>
+                    <!-- 订单信息>> -->
+                    <div class="view-box">
+                        <h4>游客信息</h4>
+                        <p class="p-info first">
+                            联系人姓名： <strong th:text="${contactInfo.get(0).name}"></strong>
+                            联系人手机： <strong th:text="${contactInfo.get(0).phone}"></strong>
+                        </p>
+                        <table class="p-table">
+                            <tbody>
+                            <tr>
+                                <th>姓名</th>
+                                <th>手机</th>
+                                <th>性别</th>
+                                <th>邮箱</th>
+                                <th>出生年月</th>
+                            </tr>
+                            <tr th:each="contact:${contactInfo}">
+
+                                <td th:text="${contact.name}"></td>
+                                <td th:text="${contact.phone}"></td>
+                                <td th:text="${contact.realSex}"></td>
+                                <td th:text="${contact.email}"></td>
+                                <td th:text="${#dates.format(contact.birthday,'yyyy-MM-dd HH:mm:ss')}"></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h4>订单信息</h4>
+                        <ul class="order-info">
+                            <li>订单号：<span th:text="${ordersInfo.orderno}"></span></li>
+                            <li>订单状态：<span th:text="${ordersInfo.sequence.value}"></span></li>
+                            <li>下单时间：<span th:text="${#dates.format(ordersInfo.createTime,'yyyy-MM-dd HH:mm:ss')}"></span></li>
+                            <li>购  买  人：<span th:text="${ordersInfo.users.name}"></span></li>
+                            <div class="clear"></div>
+                        </ul>
+                        <!-- 订单列表>> -->
+                        <div class="order_list-box">
+                            <table class="r-table">
+                                <thead>
+                                <tr class="thead">
+                                    <th class="product-name">产品名称</th>
+                                    <th class="play-date">游玩日期</th>
+                                    <th class="price">现售价</th>
+                                    <th class="price">游玩人数</th>
+                                    <th class="other">小计</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${orders1Info.trips.title}"></td>
+                                    <td th:text="${#dates.format(orders1Info.startTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${orders1Info.totalPrice}"></td>
+                                    <td th:text="${orders1Info.num}"></td>
+                                    <td th:text="${orders1Info.totalPrice}*${orders1Info.num}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!--赠品开始 -->
+                            <!--赠品结束 -->
+                            <p class="price-sum">
+                                <b>订单结算总额：</b>
+                                <dfn>
+                                    ¥<i class="f24" th:text="${orders1Info.totalPrice}*${orders1Info.num}"></i>
+                                </dfn>
+                            </p>
+                        </div>
+                        <!-- <<订单列表 -->
+                    </div>
+                </div>
+            </div>
+            <div class="content" >
+                <div class="buttom_list">
+                    <b class="blt buttom_list_tit1">订购指南</b> <a rel="nofollow" href="#">门票订购流程是怎样的？</a>
+                    <a rel="nofollow" href="#">二维码使用时有什么注意事项？</a> <a rel="nofollow"
+                                                                     href="#">可以预定多长时间的门票？</a> <a rel="nofollow" href="#">想要修改订单，怎么操作？</a>
+                </div>
+                <div class="buttom_list">
+                    <b class="blt buttom_list_tit2">注册与登录</b> <a rel="nofollow"
+                                                                 href="#">手机没有收到激活/验证短信怎么办？</a> <a rel="nofollow" href="#">怎样才能成为驴妈妈会员？</a>
+                    <a rel="nofollow" href="#">在哪登录会员帐号？</a> <a rel="nofollow" href="#">如何修改我的帐号密码？</a>
+                </div>
+                <div class="buttom_list">
+                    <b class="blt buttom_list_tit3">支付与取票</b> <a rel="nofollow"
+                                                                 href="#">付款方式有哪些？</a> <a rel="nofollow" href="#">在线支付安全吗？</a> <a
+                        rel="nofollow" href="#">为什么支付不成功？</a> <a rel="nofollow" href="#">想要退款，应该怎么做？</a>
+                </div>
+                <div class="buttom_list" style="border: medium none;">
+                    <b class="blt buttom_list_tit4">沟通与订阅</b> <a rel="nofollow"
+                                                                 href="#">我想咨询门票，应该怎么办？</a> <a rel="nofollow" href="#">我有意见，在哪可以提？</a>
+                    <a rel="nofollow" href="#">我想投诉，应该怎么反映？</a> <a rel="nofollow"
+                                                                   href="#">我是景区负责人，怎么联系驴妈妈？</a>
+                </div>
+            </div>
+        </div>
+        <!-- 右侧    我的约单 结束 -->
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#person").hover(function(){
+        $("#person .personlist").show();
+
+    }, function(){
+        $("#person .personlist").hide();
+    });
+</script>
+
+</body>
+</html>

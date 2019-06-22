@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/personalCss.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link th:href="@{/css/dashboard.css}"  rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/img_account.css}" />
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/personal_information.js}"></script>
+    <script type="text/javascript" th:src="@{/js/header.js}"></script>
+    <link  th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <link  th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="header::#topbar" ></div>
+
+<div style="margin:30px auto" >
+    <div style="width: 200px;height:100px;float: left "></div>
+    <!--左侧-->
+    <div th:replace="left::#leftbar(activeUri='myContact.html')"></div>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4" th:style="@{float:top}">
+        <div style="height: 30px"></div>
+        <h2><a class="btn btn-sm btn-success" href="emp" th:href="@{/jumptoadd}">游客添加</a>
+           <!-- <button id="deleteAll" class="btn btn-sm btn-danger" >批量删除</button>-->
+
+        </h2>
+
+        <div class="table-responsive" style="width: 90%;">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th>中文姓名</th>
+                    <th>手机号码</th>
+                    <th>证件类型</th>
+                    <th>证件号码</th>
+                    <th>邮箱</th>
+                    <th>性别</th>
+                    <th>出生日期</th>
+                    <th>旅客类型</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                <tr th:each="contact:${pageInfo.list}">
+                    <td th:text="${contact.name}"></td>
+                    <td th:text="${contact.phone}"></td>
+                    <td >身份证</td>
+                    <td th:text="${contact.cardno}"></td>
+                    <td th:text="${contact.email}"></td>
+                    <td th:text="${contact.realSex}"></td>
+                    <td th:text="${#dates.format(contact.birthday,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td >成人</td>
+
+                    <!--<td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>-->
+                    <td>
+                        <a class="btn btn-sm btn-primary" th:href="@{/addcontact/}+${contact.id}">编辑</a>
+                        <button th:attr="del_uri=@{/addcontact/}+${contact.id}" class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- 显示分页信息 -->
+
+        <div class = "col-md-6" > 当前第<span id="pageNum" th:text="${pageInfo.pageNum} "></span>页.每页条数：<span th:text="${pageInfo.pageSize}"></span>
+            一共 <span th:text="${pageInfo.total}"></span> 条记录</div>
+        <div class="col-md-6" >
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a th:href="@{'/contact?pageNum='+${pageInfo.firstPage}}" class="page-link">首页</a>
+                    </li>
+                    <!--上一页-->
+                    <li class="page-item"
+                        th:class="${pageInfo.hasPreviousPage==false?'disabled':'page-item'}">
+                        <a  th:href="@{'/contact?pageNum='+${pageInfo.prePage}}"  class="page-link">
+                            &laquo;
+                        </a>
+                    </li>
+                    <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                    <th:block th:each="nav : ${pageInfo.navigatepageNums}" >
+                        <li  class="page-item"
+                             th:class="${nav==pageInfo.pageNum?'active':'page-item'}">
+                            <a th:href="@{'/contact?pageNum='+${nav}}"
+                               th:text="${nav}" class="page-link"></a></li>
+                    </th:block>
+
+
+                    <li class="page-item"
+                        th:class="${pageInfo.hasNextPage==false?'disabled':'page-item'}">
+                        <a th:href="@{'/contact?pageNum='+${pageInfo.nextPage}}" class="page-link">
+                            &raquo;
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+
+                        <a th:href="@{'/contact?pageNum='+${pageInfo.lastPage}}" class="page-link">尾页</a>
+                        <input id="lastPage" type="hidden" th:value="${pageInfo.lastPage}">
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </main>
+    <form id="deleteEmpForm"  method="post">
+        <input type="hidden" name="_method" value="delete"/>
+    </form>
+
+
+</div>
+<script type="text/javascript">
+    $("#person").hover(function(){
+        $("#person .personlist").show();
+
+    }, function(){
+        $("#person .personlist").hide();
+    });
+
+
+    $(".deleteBtn").click(function(){
+        //删除当前员工的
+        $("#deleteEmpForm").attr("action",$(this).attr("del_uri")).submit();
+        return false;//必须return false
+    });
+</script>
+</body>
+</html>
